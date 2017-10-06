@@ -1,0 +1,16 @@
+/ A mesma estrutura é utilizada para o RPS e o RPS Substituido
+/ então se passar o parâmetro substituicao então irá setar os valores
+/ referentes a substituição
+- substituicao ||= false
+- current_numero = if substituicao then rps.numero_substituicao else rps.numero end
+- current_serie  = if substituicao then rps.serie_substituicao  else rps.serie  end
+- current_tipo   = if substituicao then rps.tipo_substituicao   else rps.tipo   end
+
+- number_size ||= 15
+- serie_size  ||= 5
+- type_size   ||= 1
+
+
+*{tag: "#{namespace_for_tags}Numero"} = ts_numero_rps(current_numero)
+*{tag: "#{namespace_for_tags}Serie"}  = ts_serie_rps(current_serie)
+*{tag: "#{namespace_for_tags}Tipo"}   = ts_tipo_rps(current_tipo)

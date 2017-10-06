@@ -1,0 +1,4 @@
+*{tag: "#{namespace_for_tags}CpfCpj"}
+  *{tag: "#{namespace_for_tags}Cnpj"} = ts_cnpj(emitente.cnpj)
+- if emitente.inscricao_municipal.present?
+	*{tag: "#{namespace_for_tags}InscricaoMunicipal"} = ts_inscricao_municipal(emitente.inscricao_municipal)

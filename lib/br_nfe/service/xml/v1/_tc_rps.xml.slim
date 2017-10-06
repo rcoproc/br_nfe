@@ -1,0 +1,52 @@
+- xml_rps = render_xml '_tc_inf_rps', rps: rps
+/ Alguns órgãos emissores não aceitam o atributo ID na tag (Como a betha)
+- attributes_inf_rps = id_attribute? ? {Id: "#{rps.numero}"} : {}
+*{tag: "#{namespace_for_tags}InfDeclaracaoPrestacaoServico"} *attributes_inf_rps
+  *{tag: "#{namespace_for_tags}Rps"} *attributes_inf_rps
+    = xml_rps.html_safe
+
+  *{tag: "#{namespace_for_tags}Competencia"} = ts_date(rps.competencia)
+
+  *{tag: "#{namespace_for_tags}Servico"}
+	  = render_xml '_tc_dados_servico', rps: rps
+
+  *{tag: "#{namespace_for_tags}Prestador"}
+	  = render_xml '_tc_identificacao_prestador', emitente: emitente
+
+  *{tag: "#{namespace_for_tags}Tomador"}
+	  = render_xml '_tc_dados_tomador', destinatario: rps.destinatario
+
+  - if emitente.regime_especial_tributacao.present? 
+  / Código de identificação do regime especial de tributação: 
+  / - (1)Microempresa municipal
+  / - (2)Estimativa
+  / - (3)Sociedade de profissionais
+  / - (4)Cooperativa, 
+  / - (5)Microempresário Individual (MEI)
+  / - (6)Microempresário e Empresa de Pequeno Porte (ME EPP)
+  *{tag: "#{namespace_for_tags}RegimeEspecialTributacao"} = ts_regime_especial_tributacao(emitente.regime_especial_tributacao) 
+
+  / (1)sim ----- (2)não -----
+  *{tag: "#{namespace_for_tags}OptanteSimplesNacional"} = ts_sim_nao(emitente.optante_simples_nacional?)   
+
+  / (1)sim ----- (2)não -----
+  *{tag: "#{namespace_for_tags}IncentivoFiscal"} = ts_sim_nao(emitente.incentivo_fiscal?)
+
+  *{tag: "#{namespace_for_tags}Producao"} = "1"
+
+  - if rps.intermediario
+    *{tag: "#{namespace_for_tags}IdentificacaoIntermediario"}
+    = render_xml '_tc_identificacao_intermediario_servico', intermediario: rps.intermediario
+
+  - if rps.codigo_obra.present? || rps.codigo_art.present?
+	  *{tag: "#{namespace_for_tags}ConstrucaoCivil"}
+		  = render_xml '_tc_dados_construcao_civil', rps: rps
+
+  /  *{tag: "#{namespace_for_tags}NaturezaOperacao"} = ts_natureza_operacao(emitente.natureza_operacao)
+
+  - if rps.replace_invoice?
+    *{tag: "#{namespace_for_tags}RpsSubstituido"}
+      = render_xml '_tc_identificacao_rps', rps: rps, substituicao: true
+
+- if signature_type?(:default) && certificate
+	= render_xml('signature_sh1', data_xml: xml_rps.html_safe, uri: "#R#{rps.numero}").html_safe

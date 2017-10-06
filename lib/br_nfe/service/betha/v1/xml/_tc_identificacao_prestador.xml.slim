@@ -1,0 +1,9 @@
+*{tag: "#{namespace_for_tags}CpfCnpj"}
+  *{tag: "#{namespace_for_tags}Cnpj"} = ts_cnpj(emitente.cnpj)
+- if emitente.inscricao_municipal.present? && self.is_a?(BrNfe::Service::Betha::V1::RecepcaoLoteRps)
+	*{tag: "#{namespace_for_tags}InscricaoMunicipal"} = ts_inscricao_municipal(emitente.inscricao_municipal)
+- if emitente.senha.present?
+  *{tag: "#{namespace_for_tags}Senha"} = ts_senha(emitente.senha)
+- if emitente.frase_secreta.present? 
+  *{tag: "#{namespace_for_tags}FraseSecreta"}  = ts_frase_secreta(emitente.frase_secreta)
+

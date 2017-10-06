@@ -1,0 +1,7 @@
+- contact ||= false
+- raise "Deve ser passado uma variável local chamda contact" unless contact
+
+- if contact.telefone.present?
+	*{tag: "#{namespace_for_tags}Telefone"} = ts_telefone(contact.telefone)
+- if contact.email.present?
+	*{tag: "#{namespace_for_tags}Email"} = ts_email(contact.email)

@@ -1,0 +1,22 @@
+- rps ||= false
+- raise "Deve ser passado uma vsariavel local chamada rps" unless rps
+
+*{tag: "#{namespace_for_tags}Valores"}
+	= render_xml '_tc_valores', rps: rps
+
+*{tag: "#{namespace_for_tags}IssRetido"} = ts_sim_nao(rps.iss_retido?)
+
+/- if rps.total_iss_retido.present? && rps.total_iss_retido.to_f > 0.0
+/	*{tag: "#{namespace_for_tags}ValorIssRetido"} = ts_valor(rps.total_iss_retido)
+
+*{tag: "#{namespace_for_tags}ItemListaServico"} = ts_item_lista_servico(rps.item_lista_servico)
+- if rps.cnae_code.present?
+	*{tag: "#{namespace_for_tags}CodigoCnae"} = ts_codigo_cnae(rps.cnae_code)
+- if rps.codigo_tributacao_municipio.present?
+	*{tag: "#{namespace_for_tags}CodigoTributacaoMunicipio"} = ts_codigo_tributacao(rps.codigo_tributacao_municipio)
+
+*{tag: "#{namespace_for_tags}Discriminacao"}   = ts_discriminacao(rps.description)
+*{tag: "#{namespace_for_tags}CodigoMunicipio"} = ts_codigo_municipio_ibge(rps.codigo_municipio)
+- if rps.codigo_pais.present?
+  *{tag: "#{namespace_for_tags}CodigoPais"} = ts_codigo_tributacao(rps.codigo_pais)
+*{tag: "#{namespace_for_tags}ExigibilidadeISS"} = "1"

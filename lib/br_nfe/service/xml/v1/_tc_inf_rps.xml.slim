@@ -1,0 +1,8 @@
+- rps ||= false
+- raise "É obrigatório passar um RPS por parâmetro" unless rps
+
+*{tag: "#{namespace_for_tags}IdentificacaoRps"}
+	= render_xml '_tc_identificacao_rps', rps: rps
+
+*{tag: "#{namespace_for_tags}DataEmissao"}      = ts_date(rps.data_emissao)
+*{tag: "#{namespace_for_tags}Status"} = ts_status_rps(rps.status)

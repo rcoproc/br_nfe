@@ -1,0 +1,7 @@
+*{tag: "#{namespace_for_tags}Numero"} = ts_numero_nfse(nfe_number)
+*{tag: "#{namespace_for_tags}Cnpj"}   = ts_cnpj(emitente.cnpj)
+
+- if emitente.inscricao_municipal.present?
+	*{tag: "#{namespace_for_tags}InscricaoMunicipal"} = ts_inscricao_municipal(emitente.inscricao_municipal)
+
+*{tag: "#{namespace_for_tags}CodigoMunicipio"} = ts_codigo_municipio_ibge(codigo_ibge_municipio_prestacao)
